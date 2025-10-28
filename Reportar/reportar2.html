@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reportar</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
+</head>
+<body>
+    
+    <header>
+        <nav>
+            <img src="..\logo_SF.png" id="logo">
+            <div id="espaco"></div>
+            <ul>
+                <li><a href="..\index.html">Home</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="form-section">
+            <h2>Reportar Problema</h2>
+            <form id="report-form">
+                <label for="tipo">Tipo de problema:</label>
+                <select id="tipo" name="tipo">
+                    <option value="queimada">Queima de entulho</option>
+                    <option value="vazamento">Vazamento de óleo/combustível</option>
+                    <option value="lixo">Descarte irregular</option>
+                    <option value="outro">Outro</option>
+                </select>
+
+                <label for="descricao">Descrição:</label>
+                <textarea id="descricao" name="descricao" rows="4" required></textarea>
+
+                <label for="localizacao">Localização:</label>
+                <input type="text" id="localizacao" name="localizacao" placeholder="Ex: Rua X, Bairro Y" required />
+            
+                <div id="mapa">
+                    <section>
+                     <div id="map"></div>
+                    </section>
+                </div>    
+
+                <button type="submit">Enviar denúncia</button>      
+            </form>    
+        </section>
+    </main>
+
+
+    <footer>
+        <p>&copy; 2025 EcoRadar. Todos os direitos reservados.</p>
+    </footer>
+
+
+
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+    <script>
+        const map = L.map('map').setView([-23.5505, -46.6333], 11); // São Paulo
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+    
+        L.marker([-23.5505, -46.6333]).addTo(map)
+        .bindPopup('Exemplo de ocorrência')
+        .openPopup();
+  
+        var ponto = L.popup();
+
+        var drawControl = new L.Control.Draw();
+        map.addControl(drawControl);
+
+        const polygon = L.polygon([
+        [-23.5505, -46.6333],
+        [-23.5400, -46.6233],
+        [-23.5600, -46.6200],
+        [-23.5700, -46.6185]
+        ], {
+        color: 'red'
+        }).addTo(map);
+
+        map.on('click', function(e) {
+    const { lat, lng } = e.latlng;
+
+
+    
+    document.getElementById('localizacao').value = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+    });
+
+
+polygon.bindPopup("Exemplo de polígono");
+
+
+    </script>
+</body>
+</html>
+

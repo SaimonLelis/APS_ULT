@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="shortcut icon" href="/Img/login_ico.png" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+</head>
+
+<body>
+    <div class="container1"> <!--    Login (Página)    -->
+        <div class="form-bx login">
+            <form action="">
+                <h1>Login</h1>
+                <div class="input-box">
+                    <input type="text" id="userlog" placeholder="Usuario" required>
+                    <i class='bx bxs-user-badge'></i>
+                </div>
+                <div class="input-box">
+                    <input type="password" id="logarbtn" placeholder="Senha" required>
+                    <i class='bx bxs-lock-open'></i>
+                </div>
+                <div class="forgot-link">
+                    <a href="#">Esqueceu a senha?</a>
+                </div>
+                <button type="submit" class="btn" onclick="login()">Login</button>
+                <p>ou faça o login com o Google!</p>
+                <div class="pltf-icons">
+                    <a href=""><i class='bx bxl-google'></i></a>
+                </div>
+            </form>
+        </div>
+
+        <div class="form-bx Registrar"> <!--    Registrar (Página)    -->
+
+
+
+            <form action="">
+
+                <div class="home-icon2">
+                    <a href="/index.html"><i class='bx bxs-home-alt-2'></i></a>
+                </div>
+
+                <h1>Registrar</h1>
+                <div class="input-box">
+                    <input type="text" id="userreg" placeholder="Usuario" required>
+                    <i class='bx bxs-user-rectangle'></i>
+                </div>
+                <div class="input-box">
+                    <input type="email" id="emailreg" placeholder="Email" required>
+                    <i class='bx bxs-envelope'></i>
+                </div>
+                <div class="input-box">
+                    <input type="password" id="passreg" placeholder="Senha" required>
+                    <i class='bx bxs-lock-open'></i>
+                </div>
+                <button type="submit" class="btn" onclick="registrar()">Registrar</button>
+                <p>ou faça o Registre-se com o Google!</p>
+                <div class="pltf-icons">
+                    <a href=""><i class='bx bxl-google'></i></a>
+                </div>
+            </form>
+        </div>
+
+        <div class="toggle-box">
+            <div class="toggle-painel toggle-left"> <!--    Registrar (botão)    -->
+                <div class="home-icon">
+                    <a href="/index.html"><i class='bx bxs-home-alt-2'></i></a>
+                </div>
+                <h1>Olá, Bem-Vindo!</h1>
+                <p>Não Tem Uma Conta?</p>
+                <button class="btn registrar-btn">Registrar</button>
+            </div>
+            <div class="toggle-painel toggle-right"> <!--    Logar (botão)    -->
+
+                <h1>Olá, Bem-Vindo!</h1>
+                <p>Já Tem Uma Conta?</p>
+                <button class="btn logar-btn">Logar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+
+
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDG4DhV1Tk_T8QsNoahLIkbPc4fe6Qnmgg",
+            authDomain: "aps-teste-43598.firebaseapp.com",
+            databaseURL: "https://aps-teste-43598-default-rtdb.firebaseio.com",
+            projectId: "aps-teste-43598",
+            storageBucket: "aps-teste-43598.firebasestorage.app",
+            messagingSenderId: "828209031237",
+            appId: "1:828209031237:web:b889489882d2ee2bcadb2c"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+    </script>
+
+    <script src="https://www.gstatic.com/firebasejs/12.4.0/firebase-app-compat.js" ;"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.4.0/firebase-database-compat.js" ;"></script>
+
+    <script>
+        
+        
+        firebase.initializeApp(firebaseConfig)
+
+        const database = firebase.database()
+
+        
+
+        function sendData() {
+    
+            console.log('foi bebe')
+        }
+
+    </script>
+</body>
+
+</html>
