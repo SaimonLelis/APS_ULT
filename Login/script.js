@@ -2,6 +2,7 @@ const container = document.querySelector('.container1');
 const registrarBtn_tela = document.querySelector('.registrar-btn');
 const logarBtn_tela = document.querySelector('.logar-btn');
 const submit = document.querySelector('button')
+const erropass = document.querySelector('.alert-pass');
 
 registrarBtn_tela.addEventListener('click', () => {
     container.classList.add('active');
@@ -9,52 +10,80 @@ registrarBtn_tela.addEventListener('click', () => {
 
 logarBtn_tela.addEventListener('click', () => {
     container.classList.remove('active');
-    
+
 });
 
- function login() {
-    console.log('foi bebe');
+function wrongpass() {                                                                         //Conferir Senha
+    const senha = document.getElementById("passreg").value;
+    const csenha = document.getElementById("cpassreg").value; 
+    
+    if (senha.length < 6) {
+        erropass.classList.add('ativo');
+        erropass.innerText = "Senhas muito curtas!";
+        return false;
+    }
+
+    if (senha != csenha){
+        erropass.innerText = "Senhas não conferem!";
+        erropass.classList.add('ativo');
+        return false;        
+    }
+    if (senha == csenha){
+        return true
+    }
 }
 
 
-function registrar(){
-    console.log('também foi');
+function login(event) {                                                                             //Login
+    showloading();
+    event.preventDefault();
+
+    const user = document.getElementById("emaillog").value;
+    const pass = document.getElementById("userpass").value;
+
+    firebase.auth().signInWithEmailAndPassword(user, pass).then(response => {
+        hideloading();
+        window.location.href = "../index.html";
+    }).catch(error => {
+        hideloading();
+        alert(getErrorMessage(error));
+    });
 }
 
+function getErrorMessage(error) {                                                                  //Mensagme de Erro
+    if (error.code == "auth/user-not-found" || error.code == 'auth/invalid-credential') {
+        return "Usuário Não encontrado e/ou incorretos!";
+    }
+}
 
-/*
- <script type="module">
-        
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
-  
-        const firebaseConfig = {
-        apiKey: "AIzaSyDG4DhV1Tk_T8QsNoahLIkbPc4fe6Qnmgg",
-        authDomain: "aps-teste-43598.firebaseapp.com",
-        databaseURL: "https://aps-teste-43598-default-rtdb.firebaseio.com",
-        projectId: "aps-teste-43598",
-        storageBucket: "aps-teste-43598.firebasestorage.app",
-        messagingSenderId: "828209031237",
-        appId: "1:828209031237:web:b889489882d2ee2bcadb2c"
-        };
-        
-        const app = initializeApp(firebaseConfig);
+function recuperaSenha(){                                                                           //Recuperar Senha
+    showloading();
+    
+    const email = document.getElementById("emaillog").value;
+    firebase.auth().sendPasswordResetEmail(email).then(() => {
+        hideloading();
+        alert('Se possui uma conta com este Email verifique a caixa de entrada!');
+    }).catch(error => {
+        hideloading();
+        alert(getErrorMessage(error));
+    });
+}
 
-        import {getDatabase, ref, child, get, set, update, remove} from "https://www.gstatic.com/firebasejs/12.4.0/firebase-database.js";
-
-        const db = getDatabase();
-
-        let userlog = document.getElementById("userlog");
-        let passlog = document.getElementById("passlog");
-        
-        let userreg = document.getElementById("userreg");
-        let emailreg = document.getElementById("emailreg");
-        let passreg = document.getElementById("passreg");
-
-        let btnLogar = document.getElementById("btnLogar");
-        let btnReg = document.getElementById("btnReg");
-
-        function addData(){
-            set(ref(db, 'EmployeeSet/' + userlog.value))
-        }
-    </script>
-*/
+function registrar(event) {                                                                        //Registrar
+    event.preventDefault();
+    const valid = wrongpass();
+    //const user = document.getElementById("emailreg").value;
+    //const pass = document.getElementById("passreg").value;
+    
+    if (valid == true){
+        showloading();
+        firebase.auth().createUserWithEmailAndPassword('testoucarai@gmail.com', '1234567').then(() => {
+            hideloading();
+            window.location.href = "../Reportar/reportar.html";
+        }).catch(error =>{
+            hideloading();
+            alert(getErrorMessage(error));
+            console.log(error)
+        });
+    }
+}
