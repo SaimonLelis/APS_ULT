@@ -72,12 +72,12 @@ function recuperaSenha(){                                                       
 function registrar(event) {                                                                        //Registrar
     event.preventDefault();
     const valid = wrongpass();
-    //const user = document.getElementById("emailreg").value;
-    //const pass = document.getElementById("passreg").value;
+    const user = document.getElementById("emailreg").value;
+    const pass = document.getElementById("passreg").value;
     
     if (valid == true){
         showloading();
-        firebase.auth().createUserWithEmailAndPassword('testoucarai@gmail.com', '1234567').then(() => {
+        firebase.auth().createUserWithEmailAndPassword(user, pass).then(() => {
             hideloading();
             window.location.href = "../Reportar/reportar.html";
         }).catch(error =>{
