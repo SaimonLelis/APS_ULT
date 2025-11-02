@@ -4,6 +4,7 @@ const logarBtn_tela = document.querySelector('.logar-btn');
 const submit = document.querySelector('button')
 const erropass = document.querySelector('.alert-pass');
 
+
 registrarBtn_tela.addEventListener('click', () => {
     container.classList.add('active');
 });
@@ -43,7 +44,8 @@ function login(event) {                                                         
 
     firebase.auth().signInWithEmailAndPassword(user, pass).then(response => {
         hideloading();
-        window.location.href = "../index.html";
+        window.location.href = "../Reportar/reportar.html";
+        
     }).catch(error => {
         hideloading();
         alert(getErrorMessage(error));
@@ -87,3 +89,13 @@ function registrar(event) {                                                     
         });
     }
 }
+
+firebase.auth().onAuthStateChanged(user => {
+    if (user) {
+        console.log("Usuário logado:", user.email);
+        //mostrarUsuarioLogado(user.email);  // Exibe o ícone e o email do usuário
+    } else {
+        console.log("Nenhum usuário logado");
+        //esconderUsuarioLogado();  // Oculta o ícone e as opções de logout
+    }
+});

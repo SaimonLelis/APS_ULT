@@ -4,6 +4,7 @@
     margin: 0;
     padding: 0;
     font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
 }
 
 body{ 
@@ -13,51 +14,100 @@ body{
     color: #333;
 }
 
-header{
-    text-align: center;
-    justify-content: center;
-    align-items: center;
-    max-height: 10vh;
-    width: auto;
+nav{
+    
     box-shadow: rgba(0, 0, 0, 0.25) 1px 1px 10px 1px;
+    width: 100%;
+    padding: 10px 10%;
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    max-height: 10vh;
 }
 
-header ul{
+
+.logo{
+    margin: 0;
+    padding: 0;
+    top: 0;
+    max-height: 10vh;
+    position: absolute;
+    border-radius: 5px;
+}
+
+.useri{
+    font-size: 40px;
+    cursor: pointer;
+    margin-left: 30px;
+    color: #5a5a5a;
+    visibility: hidden;
+    transition: ease-in-out 0.5s;
+}
+
+.useri.loged{
+    transition: ease 0.5s;
+    visibility: visible;
+}
+
+nav ul{
+    width: 100%;
+    text-align: right;
+}
+nav ul li{
+    display: inline-block;
     list-style: none;
-    display: flex;
+    margin: 10px 20px;
+}
+nav ul li a{
+    color: #5a5a5a;
+    text-decoration: none;
 }
 
-header li{
-    margin: 3vh 2vh;
+.sub-menu-wrap{
+    position:absolute;
+    top: 100%;
+    right: 10%;
+    width: 180px;
+    max-height: 0px;
+    overflow: hidden;
+    transition: max-height 0.5s;
 }
-
-header nav{
+.sub-menu-wrap.open-menu{
+    max-height: 400px;
+}
+.sub-menu{
+    background-color: #f4f4f4;
+    box-shadow: rgba(0, 0, 0, 0.25) 1px 1px 10px 1px;
+    padding: 20px;
+    margin: 10px;
+}
+.user-inf{
     display: flex;
-    justify-content: space-around;
-    margin: auto 5vh;
-    font-family: 'Poppins';
-    font-size: 0.9rem;
+    align-items: center;
+}
+.user-inf a{
+    font-weight: 500;
+    font-size: 13px;
+    transition: transform 0.5s;
+    color: #5a5a5a;
+}
+.ico-logout{
+    position: relative;
+    margin-right: 15px;
+    top: 3px;
+    font-size: 18px;
+}
+.sub-menu a:hover{
+    transform: translate(5px);
+    color: black;
     font-weight: 600;
 }
-#espaco{
-    margin: 30%;
+
+ul{
+    transition: 0.4s ease-in-out;
 }
 
-#logo{
-    max-height: 10vh;
-    border-radius: 5px;
-}
-
-header a{
-    text-decoration: none;
-    color: #5a5a5a;
-    padding: 0 5px;
-    border-radius: 5px;
-    position: relative;
-    letter-spacing: 0px;
-}
-
-header a:hover{
+.user-icon:hover{
     color: #000000;
 }
 
@@ -117,4 +167,3 @@ button:hover {
 
     background-color: #1b5e20;
 }
-

@@ -9,3 +9,6 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
+
+//realtimedatabase
+const database = firebase.database();

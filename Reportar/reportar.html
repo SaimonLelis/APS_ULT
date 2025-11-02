@@ -5,20 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reportar</title>
     <link rel="stylesheet" href="style.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
 </head>
 <body>
     
-    <header>
+    
         <nav>
-            <img src="../Img/logo_SF.png" id="logo">
-            <div id="espaco"></div>
+            <img src="../Img/logo_SF.png" class="logo">
             <ul>
-                <li><a href="../index.html">Home</a></li>
+                <li><a href="../index.html">Home</a></li>              
             </ul>
+            <i class='bx bxs-user-circle useri' onclick="toggleMenu()"> </i>
+
+
+            <div class="sub-menu-wrap" id="subMenu">
+                <div class="sub-menu">
+                    <div class="user-inf">
+                        <a onclick="logout(event)"><i class='bx bx-log-out ico-logout' ></i>Deslogar</a>
+                    </div>
+                </div>
+            </div>
         </nav>
-    </header>
+    
 
     <main>
         <section id="form-section">
@@ -54,40 +64,14 @@
         <p>&copy; 2025 EcoRadar. Todos os direitos reservados.</p>
     </footer>
 
-
-
-
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
-    <script>
-        const map = L.map('map').setView([-23.5505, -46.6333], 11); // São Paulo
-
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors'
-        }).addTo(map);
-
     
-        L.marker([-23.5505, -46.6333]).addTo(map)
-        .bindPopup('Exemplo de ocorrência')
-        .openPopup();
-  
-        var ponto = L.popup();
-
-        var drawControl = new L.Control.Draw();
-        map.addControl(drawControl);
-
-        const polygon = L.polygon([
-        [-23.5505, -46.6333],
-        [-23.5400, -46.6233],
-        [-23.5600, -46.6200]
-        ], {
-        color: 'red'
-}).addTo(map);
-
-polygon.bindPopup("Exemplo de polígono");
-
-
-    </script>
+    <script src="https://www.gstatic.com/firebasejs/12.4.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.4.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.4.0/firebase-database-compat.js"></script>
+    <script src="../firebase-inicialize.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
 
