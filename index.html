@@ -53,6 +53,13 @@
   <script src="https://www.gstatic.com/firebasejs/12.4.0/firebase-database-compat.js"></script>
   <script src="../firebase-inicialize.js"></script>
   <script src="script.js"></script>
+  <script>
+    const map = L.map('map').setView([-23.5505, -46.6333], 11);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+    
+    </script>
   <script src="/Reportar/mapa.js"></script>
 
 </body>
