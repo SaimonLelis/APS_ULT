@@ -1,25 +1,28 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>EcoRadar</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
 </head>
+
 <body>
   <div>
-        <header>
-            <nav>
-                <img src="Img/logo_SF.png" id="logo">
-                <ul>
-                    <li><a href="Login/login.html">Login</a></li>
-                    <li><a href="Reportar/reportar.html">Reportar</a></li>
-                    <li><a href="">Fale Conosco</a></li>
-                </ul>
-            </nav>
-        </header>
-    </div>
+    <header>
+      <nav>
+        <img src="Img/logo_SF.png" id="logo">
+        <ul>
+          <li><a href="Login/login.html">Login</a></li>
+          <li><a href="Reportar/reportar.html">Reportar</a></li>
+          <!--<li><a href="">Fale Conosco</a></li>-->
+        </ul>
+      </nav>
+    </header>
+  </div>
 
 
   <main>
@@ -32,25 +35,26 @@
   <section id="sobre">
     <h2 id="QSomos">Quem Somos</h2>
     <article id="QStexto">
-      <p>Somos um grupo de desenvolvedores e cidadãos conscientes que acreditam na força da tecnologia como ferramenta de transformação ambiental. O EcoRadar nasceu da necessidade de tornar visível o que muitas vezes passa despercebido: os problemas ambientais que afetam diretamente a qualidade de vida nas áreas urbanas.
-      Nosso objetivo é oferecer uma plataforma simples, acessível e colaborativa para que qualquer pessoa possa reportar, visualizar e acompanhar ocorrências ambientais em tempo real. Seja um descarte irregular de lixo, uma queima de entulho, um vazamento de óleo ou qualquer outra situação que comprometa o equilíbrio ecológico da cidade o EcoRadar está aqui para ajudar a mapear e dar voz a essas denúncias.</p>
-      </article>
+      <p>Somos um grupo de desenvolvedores e cidadãos conscientes que acreditam na força da tecnologia como ferramenta
+        de transformação ambiental. O EcoRadar nasceu da necessidade de tornar visível o que muitas vezes passa
+        despercebido: os problemas ambientais que afetam diretamente a qualidade de vida nas áreas urbanas.
+        Nosso objetivo é oferecer uma plataforma simples, acessível e colaborativa para que qualquer pessoa possa
+        reportar, visualizar e acompanhar ocorrências ambientais em tempo real. Seja um descarte irregular de lixo, uma
+        queima de entulho, um vazamento de óleo ou qualquer outra situação que comprometa o equilíbrio ecológico da
+        cidade o EcoRadar está aqui para ajudar a mapear e dar voz a essas denúncias.</p>
+    </article>
   </section>
 
-  
-
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <script>
-    const map = L.map('map').setView([-23.5505, -46.6333], 12); // São Paulo
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap contributors'
-    }).addTo(map);
+  <script src="https://www.gstatic.com/firebasejs/12.4.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/12.4.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/12.4.0/firebase-database-compat.js"></script>
+  <script src="../firebase-inicialize.js"></script>
+  <script src="script.js"></script>
+  <script src="/Reportar/mapa.js"></script>
 
-    
-    L.marker([-23.5505, -46.6333]).addTo(map)
-      .bindPopup('Exemplo de ocorrência')
-      .openPopup();
-  </script>
 </body>
+
 </html>
