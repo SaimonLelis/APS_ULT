@@ -1,5 +1,5 @@
 const subMenu = document.querySelector('.sub-menu-wrap');
-const userlogo = document.querySelector('.useri')
+const userlogo = document.querySelector('.useri');
 
 function toggleMenu() {
     subMenu.classList.toggle("open-menu");
@@ -24,51 +24,55 @@ firebase.auth().onAuthStateChanged(user => {
     }
 });
 
-// Inicializa o mapa (exemplo em São Paulo)
 const map = L.map('map').setView([-23.5505, -46.6333], 11);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© OpenStreetMap contributors'
 }).addTo(map);
 
-// Variáveis globais de coordenadas
 let selectedMarker = null;
 let selectedLat = null;
 let selectedLng = null;
 
-map.on('click', function (e) {
+map.on('click', (e) => {
     const { lat, lng } = e.latlng;
 
-    if (selectedMarker) {
-        map.removeLayer(selectedMarker);
-    }
+    if (selectedMarker) map.removeLayer(selectedMarker);
+
     selectedMarker = L.marker([lat, lng])
         .addTo(map)
-        .bindPopup("📍Local da Ocorrência")
+        .bindPopup("📍 Local da Ocorrência")
         .openPopup();
 
     selectedLat = lat;
     selectedLng = lng;
 
-
     document.getElementById("localizacao").value = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
 });
 
+//block enter
+document.getElementById("report-form").addEventListener("keydown", (e) => {
+  if (e.key === "Enter") e.preventDefault();
+});
+
+//                                                          Form
 const reportForm = document.getElementById("report-form");
 
-
 //Quando o usuário enviar o formulário
-reportForm.addEventListener("submit", function (e) {
+
+reportForm.addEventListener("submit", (e) => {
     e.preventDefault();
-    //capturar o formulário
+
     const tipo = document.getElementById("tipo").value;
     const descricao = document.getElementById("descricao").value;
     const localizacao = document.getElementById("localizacao").value;
 
-    //Pega o usuário logado
     const user = firebase.auth().currentUser;
-    const email = user ? user.email : "anônimo";
 
-    // Monta o objeto da denúncia
+    if (!selectedMarker || !selectedLat || !selectedLng) {
+        alert("Selecione um local no mapa! ou digite um endereço válido.");
+        return;
+    }
+    
     const denuncia = {
         tipo,
         descricao,
@@ -77,32 +81,30 @@ reportForm.addEventListener("submit", function (e) {
         longitude: selectedLng,
         emailUsuario: user.email,
         dataEnvio: new Date().toISOString(),
-        aprovado: true  // ✅ Por padrão aprovado
+        aprovado: true  
     };
 
     // Push no banco
     firebase.database().ref("denuncias").push(denuncia)
-    .then(() => {
-        alert("🚀 Denúncia enviada com sucesso!");
-        reportForm.reset();
-        if (selectedMarker) map.removeLayer(selectedMarker);
-        selectedMarker = null;
-    })
-    .catch(error => {
-        console.error("Erro ao enviar denúncia:", error);
-        alert("Erro ao enviar. Tente novamente.");
-    });
+        .then(() => {
+            alert("🎉 Denúncia enviada com sucesso!");
+            reportForm.reset();
+            if (selectedMarker) map.removeLayer(selectedMarker);
+            selectedMarker = null;
+        })
+        .catch(error => {
+            alert("Erro ao enviar. Tente novamente.", error);
+        });
 });
 
-//mostra denuncias
-const denunciasRef = firebase.database().ref("denuncias");
+denunciasRef = firebase.database().ref("denuncias");
 
 // Att real time
 denunciasRef.on("value", (snapshot) => {
     const data = snapshot.val();
     if (!data) return;
 
-    
+
     if (window.markers) {
         window.markers.forEach(m => map.removeLayer(m));
     }
@@ -123,4 +125,109 @@ denunciasRef.on("value", (snapshot) => {
             window.markers.push(marker);
         }
     });
+});
+
+const inputLocalizacao = document.getElementById("localizacao");
+const sugestoesContainer = document.getElementById("sugestoes");
+let timeoutBusca = null;
+
+// Busca com Nominatim
+async function buscarSugestoes(query) {
+  const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&addressdetails=1&limit=5`;
+  try {
+    const resposta = await fetch(url);
+    return await resposta.json();
+  } catch (erro) {
+    console.error("Erro ao buscar sugestões:", erro);
+    return [];
+  }
+}
+
+// Exibe sugestões
+function mostrarSugestoes(lista) {
+  sugestoesContainer.innerHTML = "";
+  if (lista.length === 0) {
+    sugestoesContainer.style.display = "none";
+    return;
+  }
+
+  lista.forEach(item => {
+    const enderecoCurto = `${item.address.road || ""}, ${item.address.suburb || ""}, ${item.address.city || ""}`;
+    const opcao = document.createElement("div");
+    opcao.textContent = enderecoCurto || item.display_name;
+
+    opcao.addEventListener("click", () => {
+      inputLocalizacao.value = item.display_name;
+      sugestoesContainer.style.display = "none";
+
+      const lat = parseFloat(item.lat);
+      const lon = parseFloat(item.lon);
+
+      map.setView([lat, lon], 16);
+
+      if (selectedMarker) map.removeLayer(selectedMarker);
+      selectedMarker = L.marker([lat, lon])
+        .addTo(map)
+        .bindPopup("📍 Selecione no mapa")
+        .openPopup();
+
+      selectedLat = lat;
+      selectedLng = lon;
+    });
+
+    sugestoesContainer.appendChild(opcao);
+  });
+
+  sugestoesContainer.style.display = "block";
+}
+
+// Escuta digitação
+inputLocalizacao.addEventListener("input", () => {
+  const query = inputLocalizacao.value.trim();
+  clearTimeout(timeoutBusca);
+  if (query.length < 3) {
+    sugestoesContainer.style.display = "none";
+    return;
+  }
+
+  timeoutBusca = setTimeout(async () => {
+    const resultados = await buscarSugestoes(query);
+    mostrarSugestoes(resultados);
+  }, 400);
+});
+
+// Quando o usuário pressiona Enter após digitar o endereço
+inputLocalizacao.addEventListener("keydown", async (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    const query = inputLocalizacao.value.trim();
+    if (query.length < 3) return;
+
+    const resultados = await buscarSugestoes(query);
+    sugestoesContainer.style.display = "none";
+
+    if (resultados.length > 0) {
+      const item = resultados[0];
+      const lat = parseFloat(item.lat);
+      const lon = parseFloat(item.lon);
+
+      map.setView([lat, lon], 16);
+
+      if (selectedMarker) map.removeLayer(selectedMarker);
+      selectedMarker = L.marker([lat, lon])
+        .addTo(map)
+        .bindPopup("📍 Selecione no mapa")
+        .openPopup();
+
+      selectedLat = lat;
+      selectedLng = lon;
+    }
+  }
+});
+
+// Fecha sugestões ao clicar fora
+document.addEventListener("click", (e) => {
+  if (!sugestoesContainer.contains(e.target) && e.target !== inputLocalizacao) {
+    sugestoesContainer.style.display = "none";
+  }
 });

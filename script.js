@@ -1,2 +1,1 @@
 const denunciasRef = firebase.database().ref("denuncias");
-
