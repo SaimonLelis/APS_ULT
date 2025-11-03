@@ -8,7 +8,7 @@ function toggleMenu() {
 function logout(event) {
     firebase.auth().signOut()
         .then(() => {
-            window.location.href = "../LOGIN/login.html"; // redireciona pro login
+            window.location.href = "../Login/login.html"; // redireciona pro login
         })
         .catch((error) => {
             console.error("Erro ao deslogar:", error);
