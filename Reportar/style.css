@@ -30,7 +30,7 @@ nav{
     margin: 0;
     padding: 0;
     top: 0;
-    max-height: 10vh;
+    max-height: 65px;
     position: absolute;
     border-radius: 5px;
 }
